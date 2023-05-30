@@ -1,5 +1,7 @@
-import path from 'path'
-import { ConfigEnv, UserConfig, loadEnv } from 'vite'
+import path from 'node:path'
+import type { ConfigEnv, UserConfig } from 'vite'
+import cesium from 'vite-plugin-cesium'
+import { loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
 import Components from 'unplugin-vue-components/vite'
@@ -36,13 +38,12 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       sourcemap: true,
     },
     plugins: [
-      vue({
-        reactivityTransform: true,
-      }),
-  
+      cesium(),
+      vue(),
+
       // https://github.com/hannoeru/vite-plugin-pages
       Pages(),
-  
+
       // https://github.com/antfu/unplugin-auto-import
       AutoImport({
         resolvers: [ArcoResolver()],
@@ -58,12 +59,12 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         ],
         vueTemplate: true,
       }),
-  
+
       // https://github.com/antfu/vite-plugin-components
       Components({
         dts: true,
       }),
-  
+
       // https://github.com/antfu/unocss
       // see unocss.config.ts for config
       Unocss(),
